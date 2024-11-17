@@ -8,11 +8,19 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS orders
                   (nickname TEXT, menu TEXT, option TEXT, quantity INTEGER, completed BOOLEAN)''')
 conn.commit()
 
-cols = st.columns(len(menu_data))
-for i, (menu_name, image_url) in enumerate(menu_data.items()):
-    with cols[i]:
-        st.image(image_url, caption=menu_name, use_column_width=True)
+# 상단에 모든 메뉴 나열 (이름과 사진)
+st.title("고객용 페이지")
+st.subheader("메뉴 안내")
 
+# 메뉴 데이터 (임시 URL 사용)
+menu_data = {
+    "코하쿠토 젤리 (5개입)": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.paris.co.kr%2Fproduct%2F%25EA%25B0%2593%25EA%25B5%25AC%25EC%259A%25B4-%25EC%25AB%2580%25EB%2593%259D%25EB%25B0%2594%25EC%2582%25AD-%25EC%259E%2590%25EC%259D%25B8%25ED%258A%25B8-%25EC%258A%25A4%25EB%25AA%25A8%25EC%2596%25B4%25EC%25BF%25A0%25ED%2582%25A4%2F&psig=AOvVaw3qyiroYWUM9-PmpMo6fZRF&ust=1731911850265000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCOiq48fg4okDFQAAAAAdAAAAABAE",
+    "베이직 다이제 스모어쿠키": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.paris.co.kr%2Fproduct%2F%25EA%25B0%2593%25EA%25B5%25AC%25EC%259A%25B4-%25EC%25AB%2580%25EB%2593%259D%25EB%25B0%2594%25EC%2582%25AD-%25EC%259E%2590%25EC%259D%25B8%25ED%258A%25B8-%25EC%258A%25A4%25EB%25AA%25A8%25EC%2596%25B4%25EC%25BF%25A0%25ED%2582%25A4%2F&psig=AOvVaw3qyiroYWUM9-PmpMo6fZRF&ust=1731911850265000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCOiq48fg4okDFQAAAAAdAAAAABAE",
+    "디자인 다이제 스모어쿠키": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.paris.co.kr%2Fproduct%2F%25EA%25B0%2593%25EA%25B5%25AC%25EC%259A%25B4-%25EC%25AB%2580%25EB%2593%259D%25EB%25B0%2594%25EC%2582%25AD-%25EC%259E%2590%25EC%259D%25B8%25ED%258A%25B8-%25EC%258A%25A4%25EB%25AA%25A8%25EC%2596%25B4%25EC%25BF%25A0%25ED%2582%25A4%2F&psig=AOvVaw3qyiroYWUM9-PmpMo6fZRF&ust=1731911850265000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCOiq48fg4okDFQAAAAAdAAAAABAE",
+}
+st.subheader("메뉴 선택")
+    
+    # 메뉴 이미지와 가격 데이터를 정의합니다.
 menu_data = {
         "스모어쿠키": "https://www.paris.co.kr/product/somecookie.jpg",  # 실제 이미지 링크로 교체
         "코하쿠토 젤리": "https://www.paris.co.kr/product/jelly.jpg",
@@ -33,34 +41,6 @@ for menu_name, image_url in menu_data.items():
             """,
             unsafe_allow_html=True,
         )
-    
-    # 주문 입력
-st.subheader("주문하기")
-selected_menu = st.selectbox("메뉴를 선택하세요", list(menu_data.keys()))
-quantity = st.number_input("수량을 입력하세요", min_value=1, step=1)
-
-    # 닉네임 입력
-nickname = st.text_input("닉네임을 입력하세요")
-
-if st.button("주문하기"):
-        # 데이터베이스 연결
-        conn = sqlite3.connect('orders.db')
-        cursor = conn.cursor()
-        cursor.execute('''CREATE TABLE IF NOT EXISTS orders 
-                          (nickname TEXT, menu TEXT, quantity INTEGER, completed BOOLEAN)''')
-        conn.commit()
-
-        # 주문 저장
-        if nickname:
-            cursor.execute("INSERT INTO orders (nickname, menu, quantity, completed) VALUES (?, ?, ?, ?)",
-                           (nickname, selected_menu, quantity, False))
-            conn.commit()
-            st.success("주문이 저장되었습니다.")
-        else:
-            st.error("닉네임을 입력해 주세요.")
-        conn.close()
-
-
 
 # 주문 데이터 저장용 리스트
 order_details = []
@@ -87,9 +67,28 @@ design_options = {
 }
 
 selected_design = st.selectbox("디자인 선택", list(design_options.keys()))
+st.image(design_options[selected_design], caption=f"디자인: {selected_design}")
 
 design_quantity = st.number_input(
     f"{selected_design} 수량", min_value=0, max_value=3, step=1, key="design"
 )
 if design_quantity > 0:
     order_details.append(("디자인 다이제 스모어쿠키", selected_design, design_quantity))
+
+# 닉네임 입력
+nickname = st.text_input("닉네임을 입력하세요")
+
+# 주문 저장
+if st.button("주문하기"):
+    if nickname:
+        for menu, option, quantity in order_details:
+            cursor.execute(
+                "INSERT INTO orders (nickname, menu, option, quantity, completed) VALUES (?, ?, ?, ?, ?)",
+                (nickname, menu, option, quantity, False),
+            )
+        conn.commit()
+        st.success("주문이 저장되었습니다.")
+    else:
+        st.error("닉네임을 입력해 주세요.")
+
+conn.close()
