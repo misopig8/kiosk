@@ -15,21 +15,6 @@ pages ={
 pg = st.navigation(pages)
 pg.run()
 
-st.sidebar.markdown(
-    """
-    <style>
-    [data-testid="stSidebar"] {
-        background-color: #CC9B50; /* 민트 그린 */
-        padding: 20px;
-    }
-    [data-testid="stSidebar"] h1 {
-        color: #6E4B3A; /* 제목 색상 변경 */
-    }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
-
 backgroundColor="#FFECAE"
 # 사이드바 내용
 st.sidebar.image("https://via.placeholder.com/150", caption="부스 로고", use_column_width=True)
