@@ -35,16 +35,43 @@ st.sidebar.markdown(
 st.sidebar.image("https://via.placeholder.com/150", caption="부스 로고", use_column_width=True)
 st.sidebar.title("키오스크 메뉴")
 
+st.markdown(
+    """
+    <style>
+    body {
+        background-color: #F5F5DC;  /* 밀가루색 */
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
+st.sidebar.markdown(
+    """
+    <style>
+    [data-testid="stSidebar"] {
+        background-color: #6E4B3A;  /* 갈색 계열 */
+        padding: 20px;
+    }
+    [data-testid="stSidebar"] h1 {
+        color: #FFFFFF; /* 흰색 제목 */
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
+
 # 페이지 상단 헤더
 st.markdown(
     """
     <style>
     .header {
-        background-color: #FFF8E1;
+        background-color: #4CAF50;
         padding: 20px;
         text-align: center;
         font-size: 30px;
-        color: white;
+        color: black;
     }
     </style>
     <div class="header">
