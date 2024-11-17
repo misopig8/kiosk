@@ -19,7 +19,7 @@ st.sidebar.markdown(
     """
     <style>
     [data-testid="stSidebar"] {
-        background-color: #F5F5DC; /* 민트 그린 */
+        background-color: #CC9B50; /* 민트 그린 */
         padding: 20px;
     }
     [data-testid="stSidebar"] h1 {
@@ -30,7 +30,7 @@ st.sidebar.markdown(
     unsafe_allow_html=True,
 )
 
-
+backgroundColor="#FFECAE"
 # 사이드바 내용
 st.sidebar.image("https://via.placeholder.com/150", caption="부스 로고", use_column_width=True)
 st.sidebar.title("키오스크 메뉴")
