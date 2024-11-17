@@ -36,7 +36,7 @@ st.markdown(
     """
     <style>
     .header {
-        background-color: #602b23;
+        background-color: #CC9B50;
         padding: 20px;
         text-align: center;
         font-size: 30px;
