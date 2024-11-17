@@ -1,6 +1,5 @@
 import streamlit as st
-from page1 import customer_page
-from page2 import staff_page
+
 
 st.set_page_config(
     page_title = "공돌제과🍬",
