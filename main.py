@@ -46,36 +46,23 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-st.sidebar.markdown(
-    """
-    <style>
-    [data-testid="stSidebar"] {
-        background-color: #6E4B3A;  /* 갈색 계열 */
-        padding: 20px;
-    }
-    [data-testid="stSidebar"] h1 {
-        color: #FFFFFF; /* 흰색 제목 */
-    }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
-
-
 # 페이지 상단 헤더
 st.markdown(
     """
     <style>
     .header {
-        background-color: #4CAF50;
+        background-color: #602b23;
         padding: 20px;
         text-align: center;
         font-size: 30px;
         color: black;
+        font-family: 'Dohyeon', sans-serif;  /* 상단 헤더에만 Dohyeon 글꼴 적용 */
+        font-weight: bold;
     }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Dohyeon&display=swap" rel="stylesheet">  <!-- Dohyeon 글꼴 -->
     <div class="header">
-        🎉 공돌제과 🎉
+        🍪 공돌제과 🍪
     </div>
     """,
     unsafe_allow_html=True,
