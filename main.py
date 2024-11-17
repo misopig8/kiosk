@@ -19,16 +19,17 @@ st.sidebar.markdown(
     """
     <style>
     [data-testid="stSidebar"] {
-        background-color: #f0f4fa; /* 배경색 변경 */
+        background-color: #F5F5DC; /* 민트 그린 */
         padding: 20px;
     }
     [data-testid="stSidebar"] h1 {
-        color: #4CAF50; /* 제목 색상 변경 */
+        color: #6E4B3A; /* 제목 색상 변경 */
     }
     </style>
     """,
     unsafe_allow_html=True,
 )
+
 
 # 사이드바 내용
 st.sidebar.image("https://via.placeholder.com/150", caption="부스 로고", use_column_width=True)
@@ -39,7 +40,7 @@ st.markdown(
     """
     <style>
     .header {
-        background-color: #4CAF50;
+        background-color: #FFF8E1;
         padding: 20px;
         text-align: center;
         font-size: 30px;
@@ -47,7 +48,7 @@ st.markdown(
     }
     </style>
     <div class="header">
-        🎉 부스 키오스크 시스템 🎉
+        🎉 공돌제과 🎉
     </div>
     """,
     unsafe_allow_html=True,
@@ -55,7 +56,7 @@ st.markdown(
 st.markdown(
     """
     <div class="footer">
-        문의: example@email.com | Instagram: @example_kiosk
+         Instagram: @wlgurrr | @igg_gineers
     </div>
     """,
     unsafe_allow_html=True,
