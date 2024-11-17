@@ -10,7 +10,7 @@ cursor = conn.cursor()
 
     # 비밀번호 입력
 password = st.text_input("직원 비밀번호를 입력하세요", type="password")
-if password == "your_password":  # 실제로는 환경 변수나 더 안전한 방식으로 처리
+if password == "wlgurrr":  # 실제로는 환경 변수나 더 안전한 방식으로 처리
         st.success("비밀번호가 확인되었습니다.")
 
         # 모든 주문 데이터 가져오기
