@@ -15,8 +15,8 @@ conn.commit()
 st.subheader("메뉴 선택")
 menu_items = {
         "스모어쿠키": 3000,
-        "초코쿠키": 2500,
-        "오트밀쿠키": 2000
+        "코하쿠토 젤리": 2500,
+        "디자인 스모어쿠키": 2000
     }
 
 selected_menu = st.selectbox("메뉴를 선택하세요", list(menu_items.keys()))
