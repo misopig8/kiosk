@@ -1,42 +1,46 @@
 import streamlit as st
 import sqlite3
 
-# 데이터베이스 연결 함수
-def get_db_connection():
-    return sqlite3.connect("orders.db", check_same_thread=False)
+# 데이터베이스 초기화 함수
+def initialize_db():
+    with sqlite3.connect("orders.db") as conn:
+        cursor = conn.cursor()
+        cursor.execute('''CREATE TABLE IF NOT EXISTS orders 
+                          (nickname TEXT, menu TEXT, option TEXT, quantity INTEGER, completed BOOLEAN)''')
+        conn.commit()
 
-# 테이블 생성 함수
-def create_table():
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS orders (
-            nickname TEXT,
-            menu TEXT,
-            option TEXT DEFAULT '',
-            quantity INTEGER,
-            completed BOOLEAN
-        )
-    ''')
-    conn.commit()
-    conn.close()
+# 주문 저장 함수
+def save_order_to_db(order_details, nickname):
+    with sqlite3.connect("orders.db") as conn:
+        cursor = conn.cursor()
+        for menu, option, quantity in order_details:
+            cursor.execute(
+                "INSERT INTO orders (nickname, menu, option, quantity, completed) VALUES (?, ?, ?, ?, ?)",
+                (nickname, menu, option, quantity, False),
+            )
+        conn.commit()
 
-# 테이블 생성 실행
-create_table()
+# 초기화 실행
+initialize_db()
 
-# Streamlit 앱 제목 및 서브타이틀
+# 기존 메뉴와 UI 코드 유지
 st.title("고객용 페이지")
 st.subheader("메뉴 안내")
 
-# 메뉴 데이터
+# 메뉴 데이터 (임시 URL 사용)
 menu_data = {
-    "코하쿠토 젤리 (5개입)": "https://www.example.com/jelly.jpg",  # 이미지 URL을 실제 링크로 교체
-    "베이직 다이제 스모어쿠키": "https://www.example.com/basic_cookie.jpg",
-    "디자인 다이제 스모어쿠키": "https://www.example.com/design_cookie.jpg",
+    "코하쿠토 젤리 (5개입)": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.paris.co.kr%2Fproduct%2F%25EA%25B0%2593%25EA%25B5%25AC%25EC%259A%25B4-%25EC%25AB%2580%25EB%2593%259D%25EB%25B0%2594%25EC%2582%25AD-%25EC%259E%2590%25EC%259D%25B8%25ED%258A%25B8-%25EC%258A%25A4%25EB%25AA%25A8%25EC%2596%25B4%25EC%25BF%25A0%25ED%2582%25A4%2F&psig=AOvVaw3qyiroYWUM9-PmpMo6fZRF&ust=1731911850265000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCOiq48fg4okDFQAAAAAdAAAAABAE",
+    "베이직 다이제 스모어쿠키": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.paris.co.kr%2Fproduct%2F%25EA%25B0%2593%25EA%25B5%25AC%25EC%259A%25B4-%25EC%25AB%2580%25EB%2593%259D%25EB%25B0%2594%25EC%2582%25AD-%25EC%259E%2590%25EC%259D%25B8%25ED%258A%25B8-%25EC%258A%25A4%25EB%25AA%25A8%25EC%2596%25B4%25EC%25BF%25A0%25ED%2582%25A4%2F&psig=AOvVaw3qyiroYWUM9-PmpMo6fZRF&ust=1731911850265000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCOiq48fg4okDFQAAAAAdAAAAABAE",
+    "디자인 다이제 스모어쿠키": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.paris.co.kr%2Fproduct%2F%25EA%25B0%2593%25EA%25B5%25AC%25EC%259A%25B4-%25EC%25AB%2580%25EB%2593%259D%25EB%25B0%2594%25EC%2582%25AD-%25EC%259E%2590%25EC%259D%25B8%25ED%258A%25B8-%25EC%258A%25A4%25EB%25AA%25A8%25EC%2596%25B4%25EC%25BF%25A0%25ED%2582%25A4%2F&psig=AOvVaw3qyiroYWUM9-PmpMo6fZRF&ust=1731911850265000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCOiq48fg4okDFQAAAAAdAAAAABAE",
+}
+st.subheader("메뉴 선택")
+menu_data = {
+    "스모어쿠키": "https://www.paris.co.kr/product/somecookie.jpg",  # 실제 이미지 링크로 교체
+    "코하쿠토 젤리": "https://www.paris.co.kr/product/jelly.jpg",
+    "디자인 스모어쿠키": "https://www.paris.co.kr/product/designcookie.jpg",
 }
 
-# 메뉴를 카드 형식으로 표시
-st.subheader("메뉴 선택")
+# 메뉴를 카드 형식으로 나열
 for menu_name, image_url in menu_data.items():
     st.markdown(
         f"""
@@ -51,51 +55,44 @@ for menu_name, image_url in menu_data.items():
         unsafe_allow_html=True,
     )
 
-# 주문 관련 입력
-order_details = []  # 주문 정보 저장
-nickname = st.text_input("닉네임을 입력하세요")
+# 주문 데이터 저장용 리스트
+order_details = []
 
-# 코하쿠토 젤리 주문
+# 코하쿠토 젤리
 st.subheader("코하쿠토 젤리 (5개입)")
 jelly_quantity = st.number_input("수량 입력", min_value=0, step=1, key="jelly")
 if jelly_quantity > 0:
     order_details.append(("코하쿠토 젤리 (5개입)", None, jelly_quantity))
 
-# 베이직 다이제 스모어쿠키 주문
+# 베이직 다이제 스모어쿠키
 st.subheader("베이직 다이제 스모어쿠키")
 basic_quantity = st.number_input("수량 입력", min_value=0, step=1, key="basic")
 if basic_quantity > 0:
     order_details.append(("베이직 다이제 스모어쿠키", None, basic_quantity))
 
-# 디자인 다이제 스모어쿠키 주문
+# 디자인 다이제 스모어쿠키
 st.subheader("디자인 다이제 스모어쿠키 옵션 선택")
 design_options = {
-    "별": "https://www.example.com/star_option.jpg",
-    "하트": "https://www.example.com/heart_option.jpg",
-    "닉네임": "https://www.example.com/flower_option.jpg",
+    "별": "https://example.com/star.jpg",  # 대체 링크
+    "경원": "https://example.com/kyungwon.jpg",
+    "닉네임": "https://example.com/nickname.jpg",
 }
-
 selected_design = st.selectbox("디자인 선택", list(design_options.keys()))
 st.image(design_options[selected_design], caption=f"디자인: {selected_design}")
 
 design_quantity = st.number_input(
-    f"{selected_design} 수량", min_value=0, step=1, key="design"
+    f"{selected_design} 수량", min_value=0, max_value=3, step=1, key="design"
 )
 if design_quantity > 0:
     order_details.append(("디자인 다이제 스모어쿠키", selected_design, design_quantity))
 
+# 닉네임 입력
+nickname = st.text_input("닉네임을 입력하세요")
+
 # 주문 저장
 if st.button("주문하기"):
     if nickname:
-        conn = get_db_connection()
-        cursor = conn.cursor()
-        for menu, option, quantity in order_details:
-            cursor.execute(
-                "INSERT INTO orders (nickname, menu, option, quantity, completed) VALUES (?, ?, ?, ?, ?)",
-                (nickname, menu, option if option else "", quantity, False),
-            )
-        conn.commit()
-        conn.close()
+        save_order_to_db(order_details, nickname)
         st.success("주문이 저장되었습니다.")
     else:
         st.error("닉네임을 입력해 주세요.")
