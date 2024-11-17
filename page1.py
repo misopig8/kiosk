@@ -1,5 +1,3 @@
-import streamlit as st
-import sqlite3
 
 import streamlit as st
 import sqlite3
@@ -16,9 +14,9 @@ st.title("고객용 페이지")
 st.subheader("메뉴 안내")
 
 menu_data = {
-    "코하쿠토 젤리 (5개입)": "url_to_image1.jpg",
-    "베이직 다이제 스모어쿠키": "url_to_image2.jpg",
-    "디자인 다이제 스모어쿠키": "url_to_image3.jpg",
+    "코하쿠토 젤리 (5개입)": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.paris.co.kr%2Fproduct%2F%25EA%25B0%2593%25EA%25B5%25AC%25EC%259A%25B4-%25EC%25AB%2580%25EB%2593%259D%25EB%25B0%2594%25EC%2582%25AD-%25EC%259E%2590%25EC%259D%25B4%25EC%2596%25B8%25ED%258A%25B8-%25EC%258A%25A4%25EB%25AA%25A8%25EC%2596%25B4%25EC%25BF%25A0%25ED%2582%25A4%2F&psig=AOvVaw3qyiroYWUM9-PmpMo6fZRF&ust=1731911850265000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCOiq48fg4okDFQAAAAAdAAAAABAE.jpg",
+    "베이직 다이제 스모어쿠키": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.paris.co.kr%2Fproduct%2F%25EA%25B0%2593%25EA%25B5%25AC%25EC%259A%25B4-%25EC%25AB%2580%25EB%2593%259D%25EB%25B0%2594%25EC%2582%25AD-%25EC%259E%2590%25EC%259D%25B4%25EC%2596%25B8%25ED%258A%25B8-%25EC%258A%25A4%25EB%25AA%25A8%25EC%2596%25B4%25EC%25BF%25A0%25ED%2582%25A4%2F&psig=AOvVaw3qyiroYWUM9-PmpMo6fZRF&ust=1731911850265000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCOiq48fg4okDFQAAAAAdAAAAABAE.jpg",
+    "디자인 다이제 스모어쿠키": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.paris.co.kr%2Fproduct%2F%25EA%25B0%2593%25EA%25B5%25AC%25EC%259A%25B4-%25EC%25AB%2580%25EB%2593%259D%25EB%25B0%2594%25EC%2582%25AD-%25EC%259E%2590%25EC%259D%25B4%25EC%2596%25B8%25ED%258A%25B8-%25EC%258A%25A4%25EB%25AA%25A8%25EC%2596%25B4%25EC%25BF%25A0%25ED%2582%25A4%2F&psig=AOvVaw3qyiroYWUM9-PmpMo6fZRF&ust=1731911850265000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCOiq48fg4okDFQAAAAAdAAAAABAE.jpg",
 }
 
 cols = st.columns(len(menu_data))
